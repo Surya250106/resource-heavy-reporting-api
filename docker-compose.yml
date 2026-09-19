@@ -1,0 +1,17 @@
+services:
+  reporting-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: reporting-api
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8080/health')\" || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
